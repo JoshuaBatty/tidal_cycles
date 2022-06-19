@@ -1,0 +1,16 @@
+
+do
+    let pat = "0 0 1 1 0 2 1 2"
+        rytm = s "rytm"
+    d1 $ midichan "2" # rytm # note "c3" 
+
+
+
+
+-- RYTM
+-- MIDI
+-- midichan 0 = pad1
+-- midichan 1 = pad2
+-- midichan 2 = pad3
+-- ...
+-- midichan 11 = pad12

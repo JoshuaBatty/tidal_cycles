@@ -1,0 +1,44 @@
+--------------------------------
+----- Periodic oscillators -----
+--------------------------------
+
+-- Sine
+d1 $ sound "bd*8" # pan sine
+
+-- Cosine
+d1 $ sound "bd*8" # pan cosine # speed (sine + 0.5)
+
+-- Square
+d1 $ sound "bd*8" # pan (cat [square, sine])
+
+-- Triangle
+d1 $ sound "bd*16" # speed (slow 2 $ range 0.5 2 tri)
+
+-- Sawtooth
+d1 $ sound "bd*8" # pan (slow 2 saw)
+
+-- Inverted Sawtooth
+d1 $ sound "bd*8" # pan (slow 2 isaw)
+
+--------------------------------
+--- Non-Periodic oscillators ---
+--------------------------------
+
+-- Rand
+d1 $ sound "bd*8" # pan rand
+
+-- Irand
+d1 $ sound "drum*8" # n (irand 8)
+
+--------------------------------
+----- Scaling oscillators ------
+--------------------------------
+
+d1 $ s "bass:5*8" # lpf (range 200 5000 $ sine)
+
+------------------------------------
+--- Speeding up/down oscillators ---
+------------------------------------
+
+d1 $ s "bass:5*8" # lpf (slow 4 $ range 200 5000 $ sine) 
+
