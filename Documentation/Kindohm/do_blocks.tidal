@@ -1,0 +1,22 @@
+setcps $ (120/120)
+
+hush
+
+-- Pitch changes
+do
+    let prog = "[0 2 8 12 -12]/8"
+    d1 $ sound "stab:16(3,8)" # speed "1" # cut "3" # up prog
+    d2 $ sound "techno:1(3,8)" # gain "1.15" # up prog
+
+-- Now with a gain pattern
+setcps $ (120/120)
+
+do
+    let prog = "[0 2 8 12]/8"
+    let gainpat = "[1*3 1*2 1 1/2]"
+    d1 $ gain (gainpat * "0.93") # sound "toys:6" # speed "1" # cut "3" # up prog
+    d2 $ rev $ gain gainpat # sound "techno:4" # gain "1.1" # up prog
+    d3 $ gain gainpat # sound "techno:1" # gain "0.95"
+    d4 $ sound "808bd:1(2,4)" # gain "1.3"
+    d5 $ stut' 4 (0.125) (|*| gain "0.74") $ (0.25 <~) $ sound "808oh:0(2,4)" # cut "2" 
+

@@ -1,0 +1,110 @@
+let
+  harmor = s "harmor"
+  rytm = s "rytm"
+  dg0 = degradeBy 0
+  dg1 = degradeBy 0.1
+  dg2 = degradeBy 0.2
+  dg3 = degradeBy 0.3
+  dg4 = degradeBy 0.4
+  dg5 = degradeBy 0.5
+  dg6 = degradeBy 0.6
+  dg7 = degradeBy 0.7
+  dg8 = degradeBy 0.8
+  dg9 = degradeBy 0.9
+  dg10 = degradeBy 1.0
+  sb = sometimesBy
+  ssb = someCyclesBy
+  shift x = (1 ~>) $ x
+  shiftBy num x = (num ~>) $ x
+  x pat = ccv pat # ccn 1 # harmor # midichan 0
+  y pat = ccv pat # ccn 2 # harmor # midichan 0
+  z pat = ccv pat # ccn 3 # harmor # midichan 0
+  width pat = ccv pat # ccn 4 # harmor # midichan 0
+  prism pat = ccv pat # ccn 5 # harmor # midichan 0
+  unidetune pat = ccv pat # ccn 6 # harmor # midichan 0
+  attack pat = ccv pat # ccn 7 # harmor # midichan 0
+  env1 pat = ccv pat # ccn 8 # harmor # midichan 0
+  rel pat = ccv pat # ccn 9 # harmor # midichan 0
+  atk pat = ccv pat # ccn 10 # harmor # midichan 0
+  dec pat = ccv pat # ccn 11 # harmor # midichan 0
+  sus pat = ccv pat # ccn 12 # harmor # midichan 0
+  harm pat = ccv pat # ccn 13 # harmor # midichan 0
+  phoff pat = ccv pat # ccn 14 # harmor # midichan 0
+  pitchenv pat = ccv pat # ccn 15 # harmor # midichan 0
+  detune pat = ccv pat # ccn 16 # harmor # midichan 0
+  detunediv pat = ccv pat # ccn 17 # harmor # midichan 0
+  width1 pat = ccv pat # ccn 18 # harmor # midichan 0
+  samplestart pat = ccv pat # ccn 28 # rytm
+  sampleend pat = ccv pat # ccn 29 # rytm
+  perf1 pat = ccv pat # ccn 35 # rytm # midichan 0
+  perf2 pat = ccv pat # ccn 36 # rytm # midichan 0
+  perf3 pat = ccv pat # ccn 37 # rytm # midichan 0
+  perf4 pat = ccv pat # ccn 39 # rytm # midichan 0
+  perf5 pat = ccv pat # ccn 40 # rytm # midichan 0
+  perf11 pat = ccv pat # ccn 46 # rytm # midichan 0
+  g x = (const $ s "~") $ x
+  limit x = (|* gain 1.2) $ x
+  cpsDisc min max = (|* cps (segment 1 $ range min max $ slow 33891 rand))
+  cpsTri min max dur = (|* cps (range min max $ slow dur tri))
+  shrand x = (shiftBy x $ rand)
+  shiftby = shiftBy
+  bdorbit = orbit 0
+  sdorbit = orbit 1
+  percorbit = orbit 2
+  staborbit = orbit 3
+  padorbit = orbit 4
+  pad2orbit = orbit 5
+  snareorbit = sdorbit
+  bgorbit = padorbit
+  bg2orbit = pad2orbit
+  snareverb pat = ccv pat # s "cc" # ccn 1
+  axiom pat = ccv pat # s "cc" # ccn 2
+  gran pat = ccv pat # s "cc" # ccn 3
+  axiom1 pat = ccv pat # s "cc" # ccn 4
+  axiom2 pat = ccv pat # s "cc" # ccn 5
+  rev1size pat = ccv pat # s "cc" # ccn 6
+  rev2size pat = ccv pat # s "cc" # ccn 7
+  one prob x = sb prob (stutWith 2 0.0625 id) $ shift $ x
+  one12 prob x = sb prob (stutWith 2 (1/12) id) $ shift $ x
+  roll prob x = sb prob (stutWith 2 (0.0625*3) id) $ shift $ x
+  roll2 prob x = sb prob (stutWith 2 (0.125*3) id) $ shift $ x
+  roll' = roll2
+  thicken x = superimpose ((|* speed 0.97) . (# pan (shiftBy 30 $ rand)) . (# cut 5))
+                  $ superimpose ((|* speed 1.02) . (# pan (shiftBy 32 $ rand)) . (# cut 4)) $ x
+  padstut prob x = ssb 0.2 (stutWith "<7 4 5 6 8>" "<0.125 0.333 0.25>" (# gain 0.9)) $ shift $ x
+  low prob x = sb prob (|* speed 0.5) $ shift $ x
+  backwards prob x = sb prob (|* speed "-1") $ shift $ x
+  ripOLD a b p = within (0.25, 0.75) (slow 2 . rev . stut 8 a b) p
+  ripOLD' a b c d e p = within (a, b) (slow 2 . rev . stut c d e) p
+  rip prob x = ssb prob (ripOLD 0.6 (0.0625/8)) $ shift $ x
+  rip2 prob x = ssb prob (ripOLD 0.6 (0.0625/4)) $ shift $ x
+  rip3 prob x = ssb prob (ripOLD 0.6 (0.0625/16)) $ shift $ x
+  rip' prob x = ssb prob (ripOLD' 0 1 8 0.6 (0.0625/8)) $ shift $ x
+  rip2' prob x = ssb prob (ripOLD' 0 1 8 0.6 (0.0625/4)) $ shift $ x
+  rip3' prob x = ssb prob (ripOLD' 0 1 8 0.6 (0.0625/16)) $ shift $ x
+  rep times x = stutWith times (0.125*3) id $ x
+  rep' times x = stutWith times (0.0625*3) id $ x
+  beginend bpat durpat = (begin bpat) # (end $ (+) <$> bpat <*> durpat)
+  be = beginend
+  clutch i = transition tidal True (Sound.Tidal.Transition.clutch) i
+  clutchIn i t = transition tidal True (Sound.Tidal.Transition.clutchIn t) i
+
+d1 $ s "harmor" # midichan 0 # y (range 0 127 $ slow 33 rand)
+
+d1 $ stack [
+  s "harmor" # midichan 0 # x (range 0 127 $ slow 33 rand)
+  , s "harmor" # midichan 0 # y (range 0 127 $ slow 3311 rand)
+  , s "harmor" # note "c4" # legato (range 0.75 1 $ shrand 891)
+ ] # cps "<3 1 2 1 0.5 0.5>"
+
+hush
+
+d1 
+  $ limit
+  $ stack [ 
+    note "<c3 c2>"
+    , perf1 (segment 1 $ range 0 127 $ shrand 8293) # midichan 0
+    , ccn 102 # ccv (range 70 90 $ shrand 8791) # midichan 0
+  ] # s "rytm" # midichan 0 # cps (180/120/2)
+
+  hush

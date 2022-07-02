@@ -4,7 +4,7 @@
 setcps $ (130/120)
 d1 $ sound "bd(3,8)"
 
-hush
+hush 
 
 -- 1. stut
 -- p1 number of notes to insert
@@ -20,7 +20,7 @@ d1 $ stut 8 0.25 (0.125/2) $ sound "bd(3,8)"
 d1 $ stut' 3 0.125 (|*| gain "0.8") $ sound "bd(3,8)"
 d1 $ stut' 4 (0.125/2) (|*| gain "0.91") $ sound "bd(3,8)"
 d1 $ stut' 8 (0.125/2) (|*| speed "1.4") $ sound "bd(3,8)"
-d1 $ stut' 16 (0.125/2) ((|*| speed "1.3") . (|+| pan "0.1") . (|*| gain "0.97")) $ sound "bd(3,8)"
+d1 $ stut' 8 (0.125/2) ((|*| speed "1.3") . (|+| pan "0.1") . (|*| gain "0.97")) $ sound "bd(3,8)"
 d1 $ stut' 8 (0.125/2) (|*| speed (every 2 (0.25 <~) $ "1 2 3 4")) $ sound "bd(3,8)"
 
 

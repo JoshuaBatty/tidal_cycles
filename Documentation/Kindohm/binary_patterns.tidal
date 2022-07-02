@@ -1,0 +1,32 @@
+
+setcps $ (80/120)
+
+let inverse 1 = 0
+    inverse 0 = 1
+
+let pat = "[1 1 0 1 0 0 1 0]"
+let pat = "[0 1*4 0/2 1 0*2 0 0 0/3]"
+
+-- Use with "gain"
+do    
+    d1 $ gain pat # sound "bd:12"
+    d2 $ gain (inverse <$> pat) # sound "cp"
+
+-- Use with "pan"
+do    
+    d1 $ pan pat # sound "bd:12"
+    d2 $ pan (inverse <$> pat) # sound "cp"
+
+-- Try rotating the clap for more syncopation
+do    
+    d1 $ pan pat # sound "bd:12"
+    d2 $ (0.25 <~) $ pan (inverse <$> pat) # sound "cp"
+
+-- Rotate time around with more sounds using foldEvery
+do    
+    d1 $ gain pat # sound "bd:12"
+    d2 $ gain (inverse <$> pat) # sound "cp:4" 
+    d3 $ foldEvery [2,3] (0.125 <~) $ gain pat # sound "sn:4"
+    d4 $ foldEvery [3,4] (0.25 <~) $ gain (inverse <$> pat) # sound "hh:7"
+
+hush
